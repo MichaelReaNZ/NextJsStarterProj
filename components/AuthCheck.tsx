@@ -12,6 +12,7 @@ export default function AuthCheck({ children }: { children: React.ReactNode }) {
   } else {
     //get parent component name
     console.log("Access Denied from AuthCheck.tsx");
+    console.log(status);
     return <></>;
   }
 }
