@@ -1,4 +1,4 @@
-import { prisma } from "@/app/lib/prisma";
+import { prisma } from "@/app/lib/Clients/prisma";
 import Story from "@/components/StoryPage/Story";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";

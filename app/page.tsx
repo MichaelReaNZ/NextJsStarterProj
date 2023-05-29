@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { prisma } from "./lib/prisma";
+import { prisma } from "./lib/Clients/prisma";
 
 export default async function Home() {
   //Example of authenticated route

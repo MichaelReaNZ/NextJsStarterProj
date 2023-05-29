@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { prisma } from "../lib/prisma";
+import { prisma } from "../lib/Clients/prisma";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { ProfileForm } from "./ProfileForm";
 

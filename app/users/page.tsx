@@ -1,7 +1,7 @@
 import styles from "./page.module.css";
 
 import UserCard from "../../components/UserCard/UserCard";
-import { prisma } from "../lib/prisma";
+import { prisma } from "../lib/Clients/prisma";
 
 export default async function Users() {
   // throw new Error("This is a test error");

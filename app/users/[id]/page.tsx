@@ -1,4 +1,4 @@
-import { prisma } from "@/app/lib/prisma";
+import { prisma } from "@/app/lib/Clients/prisma";
 import FollowButton from "@/components/FollowButton/FollowButton";
 import { Metadata } from "next";
 

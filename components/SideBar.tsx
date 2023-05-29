@@ -1,6 +1,6 @@
 "use client";
 
-import { prisma } from "@/app/lib/prisma";
+import { prisma } from "@/app/lib/Clients/prisma";
 
 async function SideBar() {
   const fetchedStories = await prisma.story.findMany();
