@@ -18,8 +18,12 @@ function Story({ story, messages: initialMessages }: Props) {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  // const addMessage = (newMessage: Message) => {
+  //   setMessages([...messages, newMessage]);
+  // };
+
   const addMessage = (newMessage: Message) => {
-    setMessages([...messages, newMessage]);
+    setMessages((currentMessages) => [...currentMessages, newMessage]);
   };
 
   return (

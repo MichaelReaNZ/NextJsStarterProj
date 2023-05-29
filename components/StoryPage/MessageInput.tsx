@@ -40,6 +40,12 @@ const MessageInput: React.FC<Props> = ({ storyId, addMessage }) => {
 
     //TODO: if it fails either remove the message or highlight it red and say it failed to send
 
+    const responseData = await res.json(); //Is this where streaming would happen?
+    console.log(responseData.aiReplyMessage);
+
+    //Add the response ass a message also
+    addMessage(responseData.aiReplyMessage);
+
     setPrompt(""); // clear the input after sending
   };
 
