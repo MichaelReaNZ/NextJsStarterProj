@@ -1,5 +1,6 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
+import { prisma } from "./lib/prisma";
 
 export default async function Home() {
   //Example of authenticated route
@@ -7,5 +8,25 @@ export default async function Home() {
   if (!session) {
     redirect("/api/auth/signin");
   }
-  return <main></main>;
+
+  const fetchedStories = await prisma.story.findMany();
+
+  return (
+    <main>
+      <div>
+        <button>New Story</button>
+
+        {fetchedStories.map((story) => {
+          return (
+            <div key={story.id}>
+              <h3>Name: {story.name}</h3>
+              <h3>Id: {story.id}</h3>
+              {/* Hyperlink to story */}
+              <a href={`/story/${story.id}`}>Go to story</a>
+            </div>
+          );
+        })}
+      </div>
+    </main>
+  );
 }

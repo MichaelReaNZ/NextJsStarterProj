@@ -61,6 +61,8 @@ model User {
 
   followedBy    Follows[] @relation("following")
   following     Follows[] @relation("follower")
+  
+  stories       Story[]
 }
 
 model Follows {
@@ -70,5 +72,24 @@ model Follows {
   followingId String
 
   @@id([followerId, followingId])
+}
+
+model Story {
+  id      String  @id @default(cuid())
+  userId  String
+  name    String
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages Message[] // one-to-many relation between Story and Message
+}
+
+model Message {
+  id        String  @id @default(cuid())
+  storyId   String
+  authorId  String
+  content   String  @db.Text
+  role      String
+
+  story  Story  @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  // author User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
 }
 

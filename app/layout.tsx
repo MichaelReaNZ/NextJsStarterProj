@@ -2,6 +2,7 @@ import AuthProvider from "./AuthProvider";
 import NavMenu from "../components/navbar/NavMenu";
 import "./globals.css";
 import { Inter } from "next/font/google";
+import SideBar from "@/components/SideBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,9 +19,11 @@ export default function RootLayout({
   return (
     <AuthProvider>
       <html lang="en">
-        <body className={inter.className}>
+        {/* <body className={inter.className}> */}
+        <body>
           <NavMenu />
-          {children}
+          {/* <div className="bg-[#202123] max-w-xs h-screen overflow-y-auto md:min-w-[20rem]"></div> */}
+          <div className="bg-[#343541] flex-1">{children}</div>
         </body>
       </html>
     </AuthProvider>
