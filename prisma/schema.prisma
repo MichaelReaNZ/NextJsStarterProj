@@ -8,10 +8,13 @@ datasource db {
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL") // Only needed when using a cloud provider that doesn't support the creation of new databases, like Neon. Learn more: https://pris.ly/d/migrate-shadow
 }
 
-//* //npx prisma migrate dev 
+//* //npx prisma migrate dev //! this erases data
+
+//npx prisma db push // this doesn't erase data
+
+//npx prisma generate //generates the client (types)
 
 // NextAuth Schema
-
 model Account {
   id                 String  @id @default(cuid())
   userId             String
@@ -88,6 +91,7 @@ model Message {
   authorId  String
   content   String  @db.Text
   role      String
+  // createdAt DateTime @default(now())
 
   story  Story  @relation(fields: [storyId], references: [id], onDelete: Cascade)
   // author User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
