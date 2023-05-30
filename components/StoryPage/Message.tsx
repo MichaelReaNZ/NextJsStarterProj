@@ -3,9 +3,24 @@ import { Message as MessageComponent } from "@prisma/client";
 
 type Props = {
   message: MessageComponent;
+  deleteMessage: (messageId: string) => void;
 };
 
-function MessageComponent({ message }: Props) {
+function MessageComponent({ message, deleteMessage }: Props) {
+  const DeleteMessage = async () => {
+    const res = await fetch(`/api/message/?messageId=${message.id}`, {
+      //TODO: Make sure it's taken out of the UI
+      method: "DELETE",
+    });
+
+    if (res.ok) {
+      // remove message from UI
+      deleteMessage(message.id);
+    }
+
+    // router.push("/");
+  };
+
   return (
     <div className={`py-5 text-white`}>
       <div className="flex space-x-5 px-10 max-w-4xl mx-auto">
@@ -17,7 +32,7 @@ function MessageComponent({ message }: Props) {
 
         <div className="flex items-center">
           <TrashIcon
-            onClick={() => alert("Delete Message not implemented.")}
+            onClick={DeleteMessage}
             className="h-5 w-5 text-gray-500 hover:text-red-700"
           />
         </div>

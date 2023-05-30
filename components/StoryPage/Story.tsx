@@ -26,6 +26,10 @@ function Story({ story, messages: initialMessages }: Props) {
     setMessages((currentMessages) => [...currentMessages, newMessage]);
   };
 
+  const deleteMessage = (id: string) => {
+    setMessages(messages.filter((message) => message.id !== id));
+  };
+
   return (
     <div className="flex flex-col h-screen">
       <div className="flex-1 overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-200">
@@ -36,7 +40,11 @@ function Story({ story, messages: initialMessages }: Props) {
 
         <div>
           {messages.map((message) => (
-            <MessageComponent key={message.id} message={message} />
+            <MessageComponent
+              key={message.id}
+              message={message}
+              deleteMessage={deleteMessage}
+            />
           ))}
           <div ref={messagesEndRef} />
         </div>

@@ -1,12 +1,10 @@
 "use client";
 
 import { PlusIcon } from "@heroicons/react/24/outline";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 async function NewStory() {
   const router = useRouter();
-  // const { data: session } = useSession();
 
   const createNewStory = async () => {
     const res = await fetch("/api/story", {

@@ -25,16 +25,9 @@ export default function StoryRow({ id, name }: Props) {
   }, [id, pathname]);
 
   const RemoveStory = async () => {
-    await axios
-      .post("/api/story/", {
-        storyID: id,
-        session,
-      })
-
-      .catch((error) => {
-        //Toast error
-        console.log(error);
-      });
+    const res = await fetch(`/api/story/?storyId=${id}`, {
+      method: "DELETE",
+    });
 
     router.push("/");
   };

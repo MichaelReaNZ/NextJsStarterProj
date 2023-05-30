@@ -26,7 +26,9 @@ export async function POST(req: Request) {
 export async function DELETE(req: NextRequest) {
   const session = await getServerSession(authOptions);
   const currentUserEmail = session?.user?.email!;
-  // const targetUserId = req.nextUrl.searchParams.get("targetUserId");
+  const storyId = req.nextUrl.searchParams.get("storyId");
+
+  //Go through all messages and content and delete them //TODO:
 
   const currentUserId = await prisma.user
     .findUnique({ where: { email: currentUserEmail } })
@@ -34,7 +36,7 @@ export async function DELETE(req: NextRequest) {
 
   const record = await prisma.story.delete({
     where: {
-      id: req.nextUrl.searchParams.get("storyId")!,
+      id: storyId!,
     },
   });
 
