@@ -20,6 +20,9 @@ export function SignInButton() {
           width={32}
           height={32}
           alt="Your Name"
+          className="h-12 w-12 rounded-full cursor-pointer mx-auto mb-2 hover:opacity-50
+            transition duration-900 ease-in-out 
+          "
         />
       </Link>
     );
@@ -30,7 +33,10 @@ export function SignInButton() {
 
 export function SignOutButton() {
   return (
-    <button className="bg-slate-600 rounded p-1 m-1 left-1" onClick={() => signOut()}>
+    <button
+      className="bg-slate-600 rounded p-1 m-1 left-1"
+      onClick={() => signOut()}
+    >
       Sign out
     </button>
   );

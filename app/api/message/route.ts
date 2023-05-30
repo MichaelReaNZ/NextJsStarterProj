@@ -11,6 +11,11 @@ import {
   ChatCompletionRequestMessageRoleEnum,
 } from "openai";
 
+// Langchain stuff
+import { OpenAI } from "langchain/llms/openai";
+import { PromptTemplate } from "langchain/prompts";
+import { LLMChain } from "langchain/chains";
+
 export async function PUT(req: Request) {
   const session = await getServerSession(authOptions);
   const currentUserEmail = session?.user?.email!;
@@ -19,6 +24,20 @@ export async function PUT(req: Request) {
   if (!currentUserEmail) {
     return NextResponse.redirect("/api/auth/signin");
   }
+
+  // Langchain stuff
+
+  const model = new OpenAI({ temperature: 0.9 });
+  const template = "What is a good name for a company that makes {product}?";
+  const prompt = new PromptTemplate({
+    template: template,
+    inputVariables: ["product"],
+  });
+
+  const chain = new LLMChain({ llm: model, prompt: prompt });
+  const res = await chain.call({ product: "ghost hats" });
+  console.log(res);
+  //
 
   const data = await req.json();
 
