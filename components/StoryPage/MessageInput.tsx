@@ -25,6 +25,8 @@ const MessageInput: React.FC<Props> = ({ storyId, addMessage }) => {
     // Add the new message to the messages array in the parent component
     addMessage(newMessage);
 
+    setPrompt(""); // clear the input after sending
+
     const body = {
       message: newMessage,
       storyId: storyId,
@@ -45,8 +47,6 @@ const MessageInput: React.FC<Props> = ({ storyId, addMessage }) => {
 
     //Add the response ass a message also
     addMessage(responseData.aiReplyMessage);
-
-    setPrompt(""); // clear the input after sending
   };
 
   return (

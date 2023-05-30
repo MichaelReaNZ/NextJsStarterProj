@@ -22,23 +22,15 @@ export async function PUT(req: Request) {
 
   const data = await req.json();
 
-  // const newMessage: Message = {
-  //   id: Math.random().toString(), //TODO: get db to autogenerate this
-  // content: data.content,
-  // storyId: data.storyId,
-  //   authorId: currentUserEmail,
-  //   role: "user",
-  // };
-
-  const createdMessage = await prisma.message.create({
+  await prisma.message.create({
     data: data.message,
   });
 
-  //Array<ChatCompletionRequestMessage>
   const formattedPreCompletionMessages = [
     {
       role: ChatCompletionRequestMessageRoleEnum.System,
-      content: "You are a helpful assistant.",
+      content:
+        "You are a Ai named XO, you like to entertain and tell stories but are also a project manager assistant.",
     },
     {
       role: ChatCompletionRequestMessageRoleEnum.User,
@@ -63,18 +55,19 @@ export async function PUT(req: Request) {
 
     const response: string = completion.data.choices[0].message!.content;
 
+    const aiReplyMessage: Message = {
+      id: Math.random().toString(),
+      content: response,
+      storyId: data.storyId,
+      authorId: "AiBot33",
+      role: "Bot",
+    };
+
     const aiCreatedMessage = prisma.message.create({
-      //DO we need to await here?
-      data: {
-        id: Math.random().toString(), //TODO: get db to autogenerate this
-        content: response,
-        storyId: data.storyId,
-        authorId: "AiBot33",
-        role: "Bot",
-      },
+      data: aiReplyMessage,
     });
 
-    return NextResponse.json({ aiReplyMessage: aiCreatedMessage });
+    return NextResponse.json({ aiReplyMessage: aiReplyMessage });
   } catch (error) {
     console.error(error);
     throw Error("Error querying GPT: " + error);
