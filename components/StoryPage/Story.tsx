@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { Message, Story } from "@prisma/client";
 import MessageComponent from "./Message";
 import MessageInput from "./MessageInput";
+import StartStory from "./StartStory";
 
 type Props = {
   story: Story;
@@ -18,10 +19,6 @@ function Story({ story, messages: initialMessages }: Props) {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // const addMessage = (newMessage: Message) => {
-  //   setMessages([...messages, newMessage]);
-  // };
-
   const addMessage = (newMessage: Message) => {
     setMessages((currentMessages) => [...currentMessages, newMessage]);
   };
@@ -32,25 +29,35 @@ function Story({ story, messages: initialMessages }: Props) {
 
   return (
     <div className="flex flex-col h-screen">
-      <div className="flex-1 overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-200">
-        <div className="header text-lg text-center py-5 text-white">
-          <h1>Story ID: {story.id}</h1>
-          <h3>Story Name: {story.name}</h3>
-        </div>
+      {messages && messages.length > 0 ? (
+        <>
+          <div className="flex-1 overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-200">
+            <div className="header text-lg text-center py-5 text-white">
+              <h1>Story ID: {story.id}</h1>
+              <h3>Story Name: {story.name}</h3>
+            </div>
 
-        <div>
-          {messages.map((message) => (
-            <MessageComponent
-              key={message.id}
-              message={message}
-              deleteMessage={deleteMessage}
-            />
-          ))}
-          <div ref={messagesEndRef} />
-        </div>
-      </div>
+            <div>
+              {messages.map((message) => (
+                <MessageComponent
+                  index={messages.indexOf(message)}
+                  key={message.id}
+                  message={message}
+                  deleteMessage={deleteMessage}
+                  addMessage={addMessage}
+                  storyId={story.id}
+                />
+              ))}
+              <div ref={messagesEndRef} />
+            </div>
+          </div>
 
-      <MessageInput storyId={story.id} addMessage={addMessage} />
+          <MessageInput storyId={story.id} addMessage={addMessage} />
+        </>
+      ) : (
+        //Text field for character info
+        <StartStory storyId={story.id} addMessage={addMessage} />
+      )}
     </div>
   );
 }

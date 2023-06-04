@@ -15,11 +15,14 @@ const MessageInput: React.FC<Props> = ({ storyId, addMessage }) => {
     e.preventDefault();
 
     const newMessage: Message = {
-      id: Math.random().toString(), //TODO: get db to autogenerate this
+      id: Math.random().toString(),
       content: prompt,
       storyId: storyId,
       authorId: "Michael",
       role: "user",
+      choiceA: null,
+      choiceB: null,
+      createdAt: new Date(),
     };
 
     // Add the new message to the messages array in the parent component
@@ -57,7 +60,7 @@ const MessageInput: React.FC<Props> = ({ storyId, addMessage }) => {
           type="text"
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
-          placeholder="Type a message..."
+          placeholder="Say something..."
         />
         <button
           type="submit"
