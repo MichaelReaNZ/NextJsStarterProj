@@ -48,23 +48,30 @@ export async function POST(req: Request) {
       "choiceB": "description of choice B"
     }'`;
 
+  const setupStartOfStory =
+    "Introduce the protagonist. What do they look like? What is their personality? What are their daily routines or habits that might give us an insight into their character? " +
+    "Describe the world where this story takes place. What are its physical characteristics, its culture, its social structure? Is it a world much like ours, or something entirely different? " +
+    "What event sets this story in motion? It might be something dramatic or just a seemingly ordinary day with a twist. " +
+    "What does your protagonist want more than anything? How does this desire connect to the central conflict of your story? ";
   const formattedPreCompletionMessages = [
     {
       role: ChatCompletionRequestMessageRoleEnum.System,
       content:
-        "I am Endless a text based Adventure for children age 8. I will start by telling a fantastical story and then give the option between A and B." +
+        "I am Endless a text based Adventure RPG. I will start by telling a fantastical story and then give the option between A and B." +
+        // "I am Endless a text based Adventure for children age 8. I will start by telling a fantastical story and then give the option between A and B." +
         giveJsonSytemPrompt,
     },
     {
       role: ChatCompletionRequestMessageRoleEnum.User,
-      content: startGameMessage.content,
+      content: startGameMessage.content + " " + setupStartOfStory,
     },
   ];
 
   var completionRequest: CreateChatCompletionRequest = {
-    model: "gpt-3.5-turbo",
+    model: "gpt-4",
+    // model: "gpt-3.5-turbo",
     messages: formattedPreCompletionMessages,
-    temperature: 0.7,
+    temperature: 0.4,
     top_p: 1,
     max_tokens: 500,
     stream: false,

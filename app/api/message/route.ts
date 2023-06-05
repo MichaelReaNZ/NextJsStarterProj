@@ -28,7 +28,12 @@ export async function PUT(req: Request) {
   // });
 
   const giveJsonSytemPrompt = `
-  Continue the story, Give a choice between A & B.
+  Remember show don't tell, Use Sensory Details and
+  Practice Economy in Writing: Be concise. Make every word count.
+  Be specific. Avoid using vague descriptions and clichés.
+  Stay in second-person present tense.
+
+  Continue the story , Give a choice between A & B.
   Do not include the choices in the story and
     Respond ONLY in JSON and nothing else e.g:
     {
@@ -43,7 +48,7 @@ export async function PUT(req: Request) {
   const lastThreeMessages = await prisma.message.findMany({
     where: { storyId: data.storyId },
     orderBy: { createdAt: "desc" },
-    take: 3,
+    take: 5,
   });
 
   //push each message into the formattedPreCompletionMessages array in reverse order
@@ -67,37 +72,50 @@ export async function PUT(req: Request) {
   if (Math.random() < 0.25) {
     outcome = "negative / bad";
   } else if (Math.random() > 0.75) {
-    outcome = "neutral / neither good nor bad";
-  } else {
     outcome = "positive / beneficial";
+  } else {
+    outcome = "neutral / neither good nor bad";
+  }
+
+  let includeDialogue = "";
+  //25% chance of including dialogue
+  if (Math.random() < 0.3) {
+    includeDialogue = "include dialogue or monologue in this scene.";
   }
 
   console.log("outcome: ", outcome);
+  console.log("includeDialogue: ", includeDialogue);
 
   formattedPreCompletionMessages.push(
     {
       role: ChatCompletionRequestMessageRoleEnum.System,
       content:
-        "I am Endless a text based Adventure for children age 8. I am telling a fantastical story." +
+        "I am Endless a text based Adventure. I am telling a fantastical story." +
+        // "I am Endless a text based Adventure for children age 8. I am telling a fantastical story." +
         giveJsonSytemPrompt,
     },
-    {
-      role: ChatCompletionRequestMessageRoleEnum.User,
-      content: giveJsonSytemPrompt,
-    },
+    // {
+    //   role: ChatCompletionRequestMessageRoleEnum.User,
+    //   content: giveJsonSytemPrompt,
+    // },
     {
       role: ChatCompletionRequestMessageRoleEnum.User,
       content:
-        data.message.content + ` the outcome of this choice is ${outcome}.`,
+        data.message.content +
+        ` the outcome of this choice is ${outcome}.` +
+        " " +
+        includeDialogue +
+        giveJsonSytemPrompt,
     }
   );
 
   var completionRequest: CreateChatCompletionRequest = {
+    //model: "gpt-4",
     model: "gpt-3.5-turbo",
     messages: formattedPreCompletionMessages,
-    temperature: 0.7,
+    temperature: 0.3,
     top_p: 1,
-    max_tokens: 500,
+    max_tokens: 1000,
     stream: false,
     user: "Mike",
   };
@@ -112,7 +130,7 @@ export async function PUT(req: Request) {
     let jsonStoryNode = await parseJSONWithRetries(
       response,
       formattedPreCompletionMessages,
-      3
+      5
     );
 
     const aiReplyMessage: Message = {

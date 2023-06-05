@@ -28,9 +28,9 @@ export async function parseJSONWithRetries(
       var completionRequest: CreateChatCompletionRequest = {
         model: "gpt-3.5-turbo",
         messages: preCompletionMessagesArray,
-        temperature: 0.7,
+        temperature: 0.4,
         top_p: 1,
-        max_tokens: 500,
+        max_tokens: 1000,
         stream: false,
         user: "Mike",
       };
@@ -71,9 +71,10 @@ export async function parseJSONWithRetries(
     } catch (error) {
       currentAttempt++;
       const errorMessage =
-        "Trying again: Could not parse GPT response as JSON: " + error; //+
-      //" " +
-      //botResponseMessage;
+        "Trying again: Could not parse GPT response as JSON format: " +
+        error +
+        " " +
+        botResponseMessage;
       console.log(errorMessage);
 
       //add the error to the preCompletionMessagesArray so GPT can learn from it
